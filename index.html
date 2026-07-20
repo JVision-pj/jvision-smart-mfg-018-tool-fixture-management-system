@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>刀治具管理管理艙｜Jvision AI 產業管理系統 Demo</title>
+  <meta name="description" content="管理加工刀具與治具之壽命、校正與領用流程之系統，常見於精密加工與封裝製程。" />
+  <link rel="stylesheet" href="./styles.css?v=industry-system-framework-sample-20260720-1118" />
+</head>
+<body class="theme-mfg-glass-1118">
+  <main class="system-shell">
+    <aside class="side-panel" aria-label="系統側邊欄">
+      <div class="brand-block">
+        <span>JVision</span>
+        <strong>Smart Factory OS</strong>
+      </div>
+      <nav class="module-nav" aria-label="功能模組">
+        <button type="button" class="active" data-module="生產排程"><span>01</span>生產排程</button><button type="button" class="" data-module="現場執行"><span>02</span>現場執行</button><button type="button" class="" data-module="設備稼動"><span>03</span>設備稼動</button><button type="button" class="" data-module="AI 製造決策"><span>04</span>AI 製造決策</button>
+      </nav>
+      <section class="ops-summary">
+        <p>今日營運摘要</p>
+        <strong id="sidebarOpen">--</strong>
+        <span>待處理 工單</span>
+        <button type="button" data-action="run-ai">產生製造建議</button>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">AI Empowered Industry System · Case SM-018</p>
+          <h1>刀治具管理管理艙</h1>
+          <span>智慧製造｜製造管理｜管理加工刀具與治具之壽命、校正與領用流程之系統，常見於精密加工與封裝製程。</span>
+        </div>
+        <label class="global-search">
+          <span>搜尋</span>
+          <input id="searchInput" placeholder="搜尋工單、機台、批號、產線或負責人" />
+        </label>
+      </header>
+
+      <section class="kpi-grid" aria-label="即時統計">
+        <article><span>待處理</span><strong id="openCount">--</strong><small>需要團隊處理</small></article>
+        <article><span>高風險</span><strong id="riskCount">--</strong><small>AI 建議優先看</small></article>
+        <article><span>完成率</span><strong id="doneRate">--</strong><small>今日流程進度</small></article>
+        <article><span>預估損失</span><strong id="impactValue">--</strong><small>依風險與工時估算</small></article>
+      </section>
+
+      <section class="control-grid">
+        <article class="panel main-flow">
+          <div class="panel-heading">
+            <div>
+              <span>工作流程</span>
+              <h2>工單狀態看板</h2>
+            </div>
+            <b id="queueLabel">--</b>
+          </div>
+          <div class="stage-board" id="stageBoard"></div>
+        </article>
+
+        <article class="panel ai-panel">
+          <div class="panel-heading">
+            <div>
+              <span>AI 賦能情境</span>
+              <h2>痛點與系統建議</h2>
+            </div>
+            <b>LIVE</b>
+          </div>
+          <div class="ai-story">
+            <p class="pain">傳統痛點：資料分散、人工追蹤、異常通常太晚才被發現。</p>
+            <p id="aiInsight">正在整理 AI 建議...</p>
+          </div>
+          <div class="risk-bars" id="riskBars"></div>
+        </article>
+      </section>
+
+      <section class="control-grid lower">
+        <article class="panel form-panel">
+          <div class="panel-heading">
+            <div>
+              <span>新增資料</span>
+              <h2>新增生產追蹤</h2>
+            </div>
+          </div>
+          <form class="task-form" id="taskForm">
+            <label>項目名稱<input name="title" required placeholder="輸入要追蹤的工作項目" /></label>
+            <label>對象<input name="target" required placeholder="例如：產線 A / 客戶 A / 據點 A" /></label>
+            <label>風險類型
+              <select name="risk">
+                <option value="刀具超壽命使用影響加工精">刀具超壽命使用影響加工精</option><option value="治具狀態難以掌握">治具狀態難以掌握</option>
+              </select>
+            </label>
+            <button type="submit">新增到系統</button>
+          </form>
+          <div class="quick-actions">
+            <button type="button" data-action="run-ai">AI 重新分析</button>
+            <button type="button" data-action="simulate">模擬主管審核</button>
+            <button type="button" data-action="reset">還原範例資料</button>
+          </div>
+        </article>
+
+        <article class="panel records-panel">
+          <div class="panel-heading">
+            <div>
+              <span>資料清單</span>
+              <h2>即時案件與操作</h2>
+            </div>
+            <b id="recordCount">--</b>
+          </div>
+          <div class="record-list" id="taskList"></div>
+        </article>
+      </section>
+
+      <section class="panel log-panel">
+        <div class="panel-heading">
+          <div>
+            <span>營運紀錄</span>
+            <h2>系統操作 Log</h2>
+          </div>
+          <b>Audit Trail</b>
+        </div>
+        <div class="log-list" id="logList"></div>
+      </section>
+    </section>
+  </main>
+  <script>
+    window.DEMO_CONFIG = {"id":1118,"caseNo":"SM-018","name":"刀治具管理管理艙","originalName":"刀治具管理系統（Tool & Fixture Management System）","category":"智慧製造｜製造管理","description":"管理加工刀具與治具之壽命、校正與領用流程之系統，常見於精密加工與封裝製程。","repoName":"jvision-smart-mfg-018-tool-fixture-management-system","spec":{"functions":["刀治具履歷管理","使用壽命/磨耗追蹤","領用歸還紀錄","治具校正管理"],"departments":"製造工程、設備工程、生產","pains":["刀具超壽命使用影響加工精度","治具狀態難以掌握"],"workflow":"刀治具建檔 → 領用登記 → 使用壽命監控 → 校正/更換 → 履歷歸檔","ai":["AI依磨耗數據預測刀具更換時機","智慧優化刀治具調度"],"integrations":"MES、CMMS、ERP","kpi":"刀具妥善率、非預期更換次數、加工精度合格率","products":"Zoller TMS，多數企業以ERP/MES模組延伸方式管理，無獨立主流品牌"},"profile":{"object":"工單","owner":"生管主管","stages":["待排程","執行中","異常確認","已完成"],"risks":["刀具超壽命使用影響加工精","治具狀態難以掌握"],"fields":["對象","期限","風險","負責人"]},"records":[{"id":"1118-1","title":"工單 1","target":"刀治具管理 · 對象 1","owner":"生管主管","due":"D+5","risk":"刀具超壽命使用影響加工精","stage":"待排程","score":73,"priority":"medium","done":false},{"id":"1118-2","title":"工單 2","target":"刀治具管理 · 對象 2","owner":"Mia","due":"D+8","risk":"治具狀態難以掌握","stage":"執行中","score":84,"priority":"high","done":false},{"id":"1118-3","title":"工單 3","target":"刀治具管理 · 對象 3","owner":"Leo","due":"D+11","risk":"刀具超壽命使用影響加工精","stage":"異常確認","score":95,"priority":"high","done":false},{"id":"1118-4","title":"工單 4","target":"刀治具管理 · 對象 4","owner":"生管主管","due":"D+14","risk":"治具狀態難以掌握","stage":"已完成","score":51,"priority":"low","done":true},{"id":"1118-5","title":"工單 5","target":"刀治具管理 · 對象 5","owner":"Kevin","due":"D+3","risk":"刀具超壽命使用影響加工精","stage":"待排程","score":62,"priority":"medium","done":false},{"id":"1118-6","title":"工單 6","target":"刀治具管理 · 對象 6","owner":"Aken","due":"D+6","risk":"治具狀態難以掌握","stage":"執行中","score":73,"priority":"medium","done":false},{"id":"1118-7","title":"工單 7","target":"刀治具管理 · 對象 7","owner":"生管主管","due":"D+9","risk":"刀具超壽命使用影響加工精","stage":"異常確認","score":84,"priority":"high","done":false},{"id":"1118-8","title":"工單 8","target":"刀治具管理 · 對象 8","owner":"Leo","due":"D+12","risk":"治具狀態難以掌握","stage":"已完成","score":95,"priority":"high","done":true}],"modules":[{"title":"AI 摘要","text":"AI依磨耗數據預測刀具更換時機"},{"title":"流程追蹤","text":"刀治具建檔 → 領用登記 → 使用壽命監控 → 校正/更換 → 履歷歸檔"},{"title":"痛點改善","text":"刀具超壽命使用影響加工精度"},{"title":"KPI 監控","text":"刀具妥善率、非預期更換次數、加工精度合格率"}]};
+    window.SYSTEM_PRESET = {"modules":["生產排程","現場執行","設備稼動","AI 製造決策"],"primaryAction":"產生製造建議","formTitle":"新增生產追蹤","searchPlaceholder":"搜尋工單、機台、批號、產線或負責人","financeLabel":"預估損失","unit":"產線","accentWord":"Smart Factory OS"};
+  </script>
+  <script src="./app.js?v=industry-system-framework-sample-20260720"></script>
+</body>
+</html>
